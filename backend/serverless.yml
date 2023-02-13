@@ -76,8 +76,6 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
-<<<<<<< HEAD
-=======
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-get-todo-role-${self:provider.stage}
     iamRoleStatements:
       - Effect: Allow
@@ -93,7 +91,6 @@ functions:
           - xray:PutTraceSegments
         Resource:
           - '*'
->>>>>>> 3d856a4 (Implement get-todo and createtodo validation)
 
   # TODO: Configure this function - 
   # Provide iamRoleStatements property. Decide the Actions and AWS Resource. 
@@ -106,22 +103,12 @@ functions:
           method: post
           path: todos
           cors: true
-<<<<<<< HEAD
-<<<<<<< HEAD
-          authorizer: Auth
-          request:
-            schemas:
-              application/json: ${file(models/create-todo-model.json)}
-=======
-  #         authorizer: Auth
-=======
           authorizer: Auth
           reqValidatorName: RequestBodyValidator
           documentation:
             summary: Create a new todo task
             requestModels:
               'application/json': CreateTodoRequest
->>>>>>> 3d856a4 (Implement get-todo and createtodo validation)
   #         request:
   #           schemas:
   #             application/json: ${file(models/create-todo-model.json)}
@@ -136,7 +123,6 @@ functions:
           - xray:PutTraceSegments
         Resource:
           - '*'
->>>>>>> b18e85b (Implement createtodo)
 
   # TODO: Configure this function
   # Provide property for setting up CORS, Authorizer, iamRoleStatements, and request schemas
@@ -146,8 +132,6 @@ functions:
       - http:
           method: patch
           path: todos/{todoId}
-<<<<<<< HEAD
-=======
           cors: true
           authorizer: Auth
           reqValidatorName: RequestBodyValidator
@@ -167,7 +151,6 @@ functions:
           - xray:PutTraceSegments
         Resource:
           - '*'
->>>>>>> 6710db9 (Implement update todo, upload image)
 
   # TODO: Configure this function
   # Provide property for setting up CORS, Authorizer, iamRoleStatements
@@ -177,8 +160,6 @@ functions:
       - http:
           method: delete
           path: todos/{todoId}
-<<<<<<< HEAD
-=======
           cors: true
           authorizer: Auth
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-delete-todo-role-${self:provider.stage}
@@ -192,7 +173,6 @@ functions:
           - xray:PutTraceSegments
         Resource:
           - '*'
->>>>>>> 6710db9 (Implement update todo, upload image)
 
   # TODO: Configure this function
   # Provide property for setting up CORS, Authorizer, iamRoleStatements
@@ -202,8 +182,6 @@ functions:
       - http:
           method: post
           path: todos/{todoId}/attachment
-<<<<<<< HEAD
-=======
           cors: true
           authorizer: Auth
     iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-generate-s3-upload-url-role-${self:provider.stage}
@@ -222,7 +200,6 @@ functions:
           - xray:PutTraceSegments
         Resource:
           - '*'
->>>>>>> 6710db9 (Implement update todo, upload image)
 
 resources:
   Resources:
@@ -232,8 +209,6 @@ resources:
     GatewayResponseDefault4XX:
       Type: AWS::ApiGateway::GatewayResponse
       Properties:
-<<<<<<< HEAD
-=======
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
@@ -252,9 +227,6 @@ resources:
         ResponseType: DEFAULT_5XX
         RestApiId:
           Ref: ApiGatewayRestApi
-<<<<<<< HEAD
->>>>>>> b18e85b (Implement createtodo)
-=======
 
     RequestBodyValidator:
       Type: AWS::ApiGateway::RequestValidator
@@ -264,14 +236,11 @@ resources:
           Ref: ApiGatewayRestApi
         ValidateRequestBody: true
         ValidateRequestParameters: false
->>>>>>> 3d856a4 (Implement get-todo and createtodo validation)
     
     # TODO: Create a DynamoDB table with local secondary index and a composite key
     TodosTable:
       Type: AWS::DynamoDB::Table
       Properties:
-<<<<<<< HEAD
-=======
         AttributeDefinitions:
           - AttributeName: userId
             AttributeType: S
@@ -295,15 +264,12 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
->>>>>>> b18e85b (Implement createtodo)
 
     # TODO: Complete the bucket properties below. 
     # Do not forget to add the CorsConfiguration propoerty
     AttachmentsBucket:
       Type: AWS::S3::Bucket
       Properties:
-<<<<<<< HEAD
-=======
         BucketName: ${self:provider.environment.ATTACHMENT_S3_BUCKET}
         CorsConfiguration:
           CorsRules:
@@ -319,15 +285,12 @@ resources:
                 - DELETE
                 - HEAD
               MaxAge: 300
->>>>>>> b18e85b (Implement createtodo)
 
     # TODO: Complete the policy below and attach it to the bucket defined above
     # For cross referencing the name of the bucket, use "!Ref AttachmentsBucket"
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
-<<<<<<< HEAD
-=======
         PolicyDocument:
           Id: MyPolicy
           Version: "2012-10-17"
@@ -338,4 +301,3 @@ resources:
               Action: 's3:GetObject'
               Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
->>>>>>> b18e85b (Implement createtodo)
