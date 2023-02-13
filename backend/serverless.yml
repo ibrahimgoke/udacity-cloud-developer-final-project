@@ -8,6 +8,8 @@ plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
 
 provider:
   name: aws
@@ -45,6 +47,18 @@ provider:
             - xray:PutTraceSegments
           Resource: "*"
 
+custom:
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: Todos App
+        description: Serverless application for todos monitoring
+    models:
+      - name: CreateTodoRequest
+        contentType: application/json
+        schema: ${file(models/create-todo-model.json)}
+
 
 functions:
   hello:
@@ -67,6 +81,24 @@ functions:
           path: todos
           cors: true
           authorizer: Auth
+<<<<<<< HEAD
+=======
+    iamRoleStatementsName: ${self:provider.environment.PROJECT_NAME}-get-todo-role-${self:provider.stage}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.INDEX_NAME}
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+        Resource:
+          - '*'
+>>>>>>> 3d856a4 (Implement get-todo and createtodo validation)
 
   # TODO: Configure this function - 
   # Provide iamRoleStatements property. Decide the Actions and AWS Resource. 
@@ -80,12 +112,21 @@ functions:
           path: todos
           cors: true
 <<<<<<< HEAD
+<<<<<<< HEAD
           authorizer: Auth
           request:
             schemas:
               application/json: ${file(models/create-todo-model.json)}
 =======
   #         authorizer: Auth
+=======
+          authorizer: Auth
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: Create a new todo task
+            requestModels:
+              'application/json': CreateTodoRequest
+>>>>>>> 3d856a4 (Implement get-todo and createtodo validation)
   #         request:
   #           schemas:
   #             application/json: ${file(models/create-todo-model.json)}
@@ -157,7 +198,19 @@ resources:
         ResponseType: DEFAULT_5XX
         RestApiId:
           Ref: ApiGatewayRestApi
+<<<<<<< HEAD
 >>>>>>> b18e85b (Implement createtodo)
+=======
+
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'request-body-validator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
+>>>>>>> 3d856a4 (Implement get-todo and createtodo validation)
     
     # TODO: Create a DynamoDB table with local secondary index and a composite key
     TodosTable:
