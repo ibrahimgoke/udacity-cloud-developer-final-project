@@ -13,10 +13,3 @@ module.exports.hello = async (event) => {
         ),
     };
 };
-
-
-// npm install ts-loader@latest
-//  1057  serverless deploy --verbose
-//  1058  npm install ts-node-dev@latest ts-node@latest
-
-// npm install webpack@5.75.0
