@@ -44,7 +44,6 @@ provider:
         - Effect: Allow
           Action:
             - xray:PutTelemetryRecords
-            - xray:PutTraceSegments
           Resource: "*"
 
 custom:
@@ -64,13 +63,6 @@ custom:
 
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-      - httpApi:
-          path: /
-          method: get
-
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
